@@ -3,6 +3,7 @@ var lifx = new LifxClient();
 var CronJob = require('cron').CronJob;
 var mocks = require('./mocks/RoomMock');
 var io = require('./io')();
+var _ = require('underscore');
 
 lifx.init();
 
@@ -30,7 +31,7 @@ var calculateNewRoomState = function (room, newLightState) {
 };
 
 var refreshLightState = function (light) {
-    light.getState(function (err, info) {
+    light.getState && light.getState(function (err, info) {
         if (!info) {
             return;
         }
@@ -75,13 +76,15 @@ var refreshAllLightStates = function () {
     }
     roomMap = [];
 
-    var lights = lifx.lights() || [];
-    lights.forEach(refreshLightState);
+    var lights = lifx.lights('') || {};
+    _.each(lights, function(lightId, light) {
+         refreshLightState(light);
+    });
 };
 
 new CronJob('*/10 * * * * *', refreshAllLightStates, null, true, 'America/Los_Angeles');
 
-var useMock = true;
+var useMock = false;
 if (useMock) {
     roomMap = mocks.rooms;
 }

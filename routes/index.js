@@ -4,6 +4,7 @@ var lifx = require('../lifx');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+console.log('index requested');
     res.render('index', {
         title: 'LightSwitch',
         roomMap: lifx.getRoomMap()
