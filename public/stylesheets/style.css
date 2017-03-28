@@ -1,8 +1,29 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding: 50px;
+    font: 18px Ubuntu, "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: #d3d3d3;
 }
 
-a {
-  color: #00B7FF;
+.rooms {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.room {
+    vertical-align: top;
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.room-label {
+    display: block;
+}
+
+.room-icon {
+    width: 90px;
+    height: 90px;
+    display: block;
+    margin-bottom: 3px;
 }

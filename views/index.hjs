@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>{{ title }}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1>{{ title }}</h1>
-    <p>Welcome to {{ title }}</p>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <script src="/jquery/dist/jquery.js" type="text/javascript"></script>
+    <script src="/socket.io-client/dist/socket.io.js" type="text/javascript"></script>
+</head>
+<body>
+<script>
+    var socket = io.connect('http://localhost:4200');
+    socket.on('light-updated', function (data) {
+        if (!data) {
+            return;
+        }
+        $('#room-' + data.room + ' > img.room-icon').attr('src', '/images/' + data.room + '-' + data.state + '.svg');
+        $('#room-' + data.room + ' > span.room-label').text(data.display);
+    });
 
-    <div class="rooms">
-        {{#roomMap}}
-            <span class="room">
-                <a href="/rooms/{{room}}/toggle">{{ display }}</a>
+    var toggleRoom = function (roomId) {
+        $.ajax('/rooms/' + roomId + '/toggle');
+    }
+</script>
+<div class="rooms">
+    {{#roomMap}}
+        <span id="room-{{room}}" onclick="toggleRoom('{{room}}')" class="room">
+                <img src="/images/{{room}}-{{state}}.svg" class="room-icon"/>
+                <span class="room-label">{{ display }}</span>
             </span>
-        {{/roomMap}}
-    </div>
-  </body>
+    {{/roomMap}}
+</div>
+</body>
 </html>
